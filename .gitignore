@@ -23,3 +23,5 @@
 hs_err_pid*
 #过滤.idea下的文件
 .idea/
+#过滤target下的文件
+target/
