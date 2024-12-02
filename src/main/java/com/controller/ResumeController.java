@@ -7,7 +7,7 @@ import com.pojo.custom.FileUploadResult;
 import com.pojo.custom.OperateResult;
 import com.pojo.custom.ResponseResult;
 import com.pojo.dto.ResumeDTO;
-import com.pojo.vo.ResumeVO;
+import com.pojo.custom.ResumeExport;
 import com.service.FileService;
 import com.service.ResumeService;
 import com.util.WordTemplateUtil;
@@ -49,21 +49,21 @@ public class ResumeController {
 
     /**
      * 导出简历
-     *
-     * @param id 用户ID
-     * @return 流结果或者错误信息
+     * @param id    用户ID
+     * @param response  响应
+     * @return  导出结果
      */
     @GetMapping("/export/{id}")
     public ResponseResult<String> exportResume(@Validated @PathVariable @NotBlank(message = "用户ID不能为空") String id, HttpServletResponse response) {
         //获取数据并转化为导出需要的VO
-        ResumeVO resumeVO = resumeService.getVOById(id);
-        if (resumeVO == null) {
+        ResumeExport resumeExport = resumeService.getResumeExportById(id);
+        if (resumeExport == null) {
             return new ResponseResult<String>().setHttpResultEnum(HttpResultEnum.PARAM_IS_ERROR);
         }
         //准备模版文件
-        String fireUrl = ymlUtil.getFileUploadPathByModuleName(FileTypeEnum.RESUME.getModuleName()) + File.separator+FILE_NAME;
+        String filePath = ymlUtil.getFileUploadPathByModuleName(FileTypeEnum.RESUME.getModuleName()) + File.separator+FILE_NAME;
         //导出
-        WordTemplateUtil.generateWordByBean(fireUrl,"个人简历",response,resumeVO);
+        WordTemplateUtil.generateWordByBean(filePath,FILE_NAME,response, resumeExport);
         return new ResponseResult<String>().setData("导出成功");
     }
 

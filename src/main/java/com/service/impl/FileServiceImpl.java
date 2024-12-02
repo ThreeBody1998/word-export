@@ -36,7 +36,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
     @Override
     public FileUploadResult uploadFile(MultipartFile file, FileTypeEnum fileTypeEnum) {
         FileUploadResult fileUploadResult = new FileUploadResult();
-        if (file==null) {
+        if (file == null) {
             return fileUploadResult;
         }
         //文件存储至本地
@@ -50,24 +50,24 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
             return fileUploadResult;
         }
         //数据库插入
-        OperateResult insertResult = insertFile(fileName, fileTypeEnum.getType(),"/"+fileTypeEnum.getModuleName()+"/"+fileSaveName);
-        if(!insertResult.getResult()){
+        OperateResult insertResult = insertFile(fileName, fileTypeEnum.getType(), "/" + fileTypeEnum.getModuleName() + "/" + fileSaveName);
+        if (!insertResult.getResult()) {
             return fileUploadResult.setResult(false);
-        }else{
+        } else {
             fileUploadResult.setFileId(insertResult.getMessage());
         }
         fileUploadResult.setResult(operateResult.getResult());
         //返回参数设置
         if (operateResult.getResult()) {
             fileUploadResult.setFileName(fileName);
-            fileUploadResult.setFilePath(ymlUtil.getNetWorkPath()+"/"+fileTypeEnum.getModuleName()+"/"+fileSaveName);
+            fileUploadResult.setFilePath(ymlUtil.getNetWorkPath() + "/" + fileTypeEnum.getModuleName() + "/" + fileSaveName);
         }
 
         return fileUploadResult;
     }
 
     @Override
-    public OperateResult insertFile (String fileName, Integer type, String savePath) {
+    public OperateResult insertFile(String fileName, Integer type, String savePath) {
         OperateResult operateResult = new OperateResult();
         String uuid = UUID.randomUUID().toString();
         File file = new File();
@@ -79,7 +79,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
         file.setSavePath(savePath);
         file.setCreateTime(TimeUtil.getCurrentTime());
         file.setCreateUser("test");
-        if(!save(file)){
+        if (!save(file)) {
             log.error("插入数据库失败");
             return operateResult.setResult(false).setMessage("插入数据库失败");
         }
@@ -87,24 +87,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
     }
 
     @Override
-    public boolean updateFileStatus(String fileId) {
-        File file = getById(fileId);
-        if(file == null){
-            return false;
+    public String getFilePathByRelationIdAndType(String relationId, Integer type) {
+        File file = lambdaQuery().eq(File::getRelationId, relationId).eq(File::getType, type).eq(File::getIsDelete,DataConfig.DB_NOT_DELETE).one();
+        if (file != null) {
+            return file.getSavePath();
         }
-        file.setStatus(FileStatusEnum.BIND_SUCCESS.getStatus());
-        return updateById(file);
-    }
-
-    @Override
-    public boolean bindSuccess(String relationId, String fileId) {
-        File file = getById(fileId);
-        if(file == null){
-            return false;
-        }
-        file.setRelationId(relationId);
-        file.setStatus(FileStatusEnum.BIND_SUCCESS.getStatus());
-        return updateById(file);
+        return null;
     }
 }
 

@@ -33,18 +33,13 @@ public interface FileService extends IService<File> {
     OperateResult insertFile(String fileName, Integer type, String savePath);
 
     /**
-     * 更新文件状态
-     * @param fileId    文件ID
-     * @return  是否成功
-     */
-    boolean updateFileStatus(String fileId);
-
-    /**
-     * 绑定成功
+     * 根据关联ID和类型获取文件路径
      * @param relationId    关联ID
-     * @param fileId    文件ID
-     * @return  是否成功
+     * @param type  类型
+     * @return  文件路径
      */
-    boolean bindSuccess(String relationId,String fileId);
+    String getFilePathByRelationIdAndType(String relationId, Integer type);
+
+
 
 }

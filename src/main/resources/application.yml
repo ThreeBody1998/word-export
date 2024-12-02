@@ -5,9 +5,9 @@ spring:
       max-file-size: -1
       max-request-size: -1
   datasource:
-    url: jdbc:mysql://192.168.1.9/word_export?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1/word_export?serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useSSL=false&serverTimezone=UTC
     username: root
-    password: Meefo.cn@123
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
 server:
   port: 8080
@@ -21,7 +21,8 @@ server:
 network:
     ip: http://127.0.0.1
 common:
-    file-upload-path: /Users/zhoujianze/MyProject/word-export
+    # 使用你自己的文件上传路径
+    file-upload-path: /path/your/upload
     file-get-prefix: file
 
 

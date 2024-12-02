@@ -1,16 +1,19 @@
-package com.pojo.vo;
+package com.pojo.custom;
 
+import com.deepoove.poi.data.PictureRenderData;
 import com.entity.Resume;
 import com.enums.PoliticalEnum;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+
+import java.io.File;
 
 /**
  * @Author 周建泽
  * @Date 2024-11-13 17:01
  */
 @Data
-public class ResumeVO {
+public class ResumeExport {
     /**
      * 姓名
      */
@@ -46,7 +49,7 @@ public class ResumeVO {
     /**
      * 头像地址
      */
-    private String profilePictureUrl;
+    private PictureRenderData profilePictureUrl;
     /**
      * 住址
      */
@@ -76,12 +79,19 @@ public class ResumeVO {
      */
     private String selfEvaluation;
 
-    public ResumeVO(Resume resume) {
+    /**
+     * 默认图片宽度
+     */
+    private static final int DEFAULT_PHOTO_WIDTH = 100;
+    /**
+     * 默认图片高度
+     */
+    private static final int DEFAULT_PHOTO_HEIGHT = 160;
+
+    public ResumeExport(Resume resume, String profilePictureUrl) {
         BeanUtils.copyProperties(resume, this);
         this.political = PoliticalEnum.getNameByType(resume.getPoliticalStatus());
-    }
-
-    public ResumeVO() {
+        this.profilePictureUrl= new PictureRenderData(DEFAULT_PHOTO_WIDTH, DEFAULT_PHOTO_HEIGHT,new File(profilePictureUrl));
     }
 
 }
