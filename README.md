@@ -8,16 +8,19 @@
 
 
 #### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+maven:
+<dependency>
+  <groupId>com.deepoove</groupId>
+  <artifactId>poi-tl</artifactId>
+  <version>1.6.0</version>
+</dependency>
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+● java版本: Oracle OpenJDK version 17.0.2
+● 开发工具：IntelliJ IDEA 2023.1.5(Ultimate Edition)
+● 开发环境：mac15.1.1 
+● API测试工具：Apifox 2.3.19
 
 #### 参与贡献
 
